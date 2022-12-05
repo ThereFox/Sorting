@@ -1,17 +1,16 @@
-﻿
-
-using System.Globalization;
+﻿using System.Globalization;
 
 var sortingCollection = new Sorting();
 
 var collectionForSort = new List<int>()
 {
     3, 5, 2, 5, 4, 1
+    //2, 4, 5, 7, 1, 2, 3, 6
 };
 
 //sortingCollection.InsertionSort(collectionForSort);
 var arr = collectionForSort.ToArray();
-sortingCollection.mergeSort(arr, 0, collectionForSort.Count);
+sortingCollection.mergeSort(arr, 0, collectionForSort.Count - 1);
 
 foreach (var item in arr)
 {
@@ -61,22 +60,15 @@ public class Sorting
 
         var leftCollection = new int[leftLength + 1];
         var rightCollection = new int[rightLength + 1];
-
+        
         for (int iter = 0; iter < leftLength; iter++)
         {
             leftCollection[iter] = sortedCollection[startIndex + iter];
         }
 
-        for (int iter = 0; iter < rightLength; iter++)
+        for (int iter2 = 1; iter2 <= rightLength; iter2++)
         {
-            var index = middleIndex + iter;
-
-            if (sortedCollection.Length != middleIndex + iter + 1)
-            {
-                index += 1;
-            }
-
-            rightCollection[iter] = sortedCollection[index];
+            rightCollection[iter2 - 1] = sortedCollection[middleIndex + iter2];
         }
 
         leftCollection[leftLength] = int.MaxValue;
@@ -85,16 +77,16 @@ public class Sorting
         var i = 0;
         var j = 0;
 
-        for (int k = startIndex; k < endIndex; k++)
+        for (int k = startIndex; k <= endIndex; k++)
         {
-
-            if (leftCollection[i] <= rightCollection[j])
+            if (leftCollection[i] < rightCollection[j])
             {
                 sortedCollection[k] = leftCollection[i];
                 i++;
             }
-            else if (sortedCollection[k] == rightCollection[j])
+            else
             {
+                sortedCollection[k] = rightCollection[j];
                 j++;
             }
         }
