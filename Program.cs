@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
 
 var sortingCollection = new Sorting();
+var serchingCollection = new Serching();
 
 var collectionForSort = new List<int>()
 {
-    3, 5, 2, 5, 4, 1
+    3, -5, -2, 5, -1, 4, -1, 9, 4, -2
     //2, 4, 5, 7, 1, 2, 3, 6
 };
 
@@ -14,9 +15,12 @@ sortingCollection.mergeSort(arr, 0, collectionForSort.Count - 1);
 
 foreach (var item in arr)
 {
-    Console.WriteLine(item);
+    //Console.WriteLine(item);
 }
+//
+var res = serchingCollection.FindMaximumSubArray(collectionForSort, 0, collectionForSort.Count - 1);
 
+Console.WriteLine($"{res.Item1} {res.Item2} {res.Item3}");
 
 public class Sorting
 {
@@ -51,6 +55,7 @@ public class Sorting
         merge(collection, startIndex, middleIndex, endIndex);
 
     }
+
     private void merge(int[] sortedCollection, int startIndex, int middleIndex, int endIndex)
     {
         //  startIndex ... middleIndex; middleIndex + 1 ... endIndex
@@ -91,5 +96,72 @@ public class Sorting
             }
         }
     }
+    }
+
+
+public class Serching
+{
+    public (int,int,int) FindMaximumSubArray(List<int> collection, int lowerIndex, int hightIndex)
+    {
+        if(hightIndex == lowerIndex)
+        {
+            return (lowerIndex, hightIndex, collection[lowerIndex]);
+        }
+
+            var middleIndex = (lowerIndex + hightIndex) / 2;
+
+            var leftVariant = FindMaximumSubArray(collection, lowerIndex, middleIndex);
+            var rightVariant = FindMaximumSubArray(collection, middleIndex + 1, hightIndex);
+            var middleVariant = findMaxCrossingSubArray(collection, lowerIndex, middleIndex, hightIndex);
+
+            if(leftVariant.Item3 >= rightVariant.Item3 && leftVariant.Item3 >= middleVariant.Item3)
+            {
+                return (leftVariant.Item1, leftVariant.Item2, leftVariant.Item3);
+            }
+            else if(rightVariant.Item3 >= leftVariant.Item3 && rightVariant.Item3 >= middleVariant.Item3)
+            {
+                return (rightVariant.Item1, rightVariant.Item2, rightVariant.Item3);
+            }
+            else
+            {
+                return (middleVariant.Item1, middleVariant.Item2, middleVariant.Item3);
+            }
 
     }
+
+    private (int, int, int) findMaxCrossingSubArray(List<int> collection, int lowerIndex, int middleIndex, int hightIndex)
+    {
+        var leftSum = int.MinValue;
+        var summ = 0;
+        int maxLeft = 0;
+
+        for (int i = middleIndex; lowerIndex < i; i--)
+        {
+            summ -= collection[i];
+            if(summ > leftSum)
+            {
+                leftSum = summ;
+                maxLeft = i;
+            }
+        }
+
+        var rightSumm = int.MinValue;
+        summ = 0;
+        int maxRight = 0;
+
+        for (int i = middleIndex + 1; i < hightIndex; i++)
+        {
+            summ += collection[i];
+
+            if(summ > rightSumm)
+            {
+                rightSumm = summ;
+                maxRight = i;
+            }
+
+        }
+
+        return(maxLeft, maxRight, leftSum + rightSumm);
+
+    }
+}
