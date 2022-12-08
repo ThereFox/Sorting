@@ -2,13 +2,16 @@
 
 var sortingCollection = new Sorting();
 var serchingCollection = new Serching();
+var anoutherAlghorithms = new AnoutherAlghorithms();
 
 var collectionForSort = new List<int>()
 {
     3, -5, -2, 5, -1, 4, -1, 9, 4, -2
-    //2, 4, 5, 7, 1, 2, 3, 6
 };
 
+
+
+/*
 //sortingCollection.InsertionSort(collectionForSort);
 var arr = collectionForSort.ToArray();
 sortingCollection.mergeSort(arr, 0, collectionForSort.Count - 1);
@@ -21,9 +24,11 @@ foreach (var item in arr)
 var res = serchingCollection.FindMaximumSubArray(collectionForSort, 0, collectionForSort.Count - 1);
 
 Console.WriteLine($"{res.Item1} {res.Item2} {res.Item3}");
+*/
 
 public class Sorting
 {
+    #region InsertionSort
     public void InsertionSort(List<int> collection)
     {
         for (int j = 1; j < collection.Count; j++)
@@ -41,7 +46,9 @@ public class Sorting
             collection[i + 1] = key;
         }
     }
+    #endregion
 
+    #region mergeSort
     public void mergeSort(int[] collection, int startIndex, int endIndex)
     {
         if(startIndex >= endIndex)
@@ -96,11 +103,13 @@ public class Sorting
             }
         }
     }
-    }
+    #endregion
+}
 
 
 public class Serching
 {
+    #region FindMaximumSubArray
     public (int,int,int) FindMaximumSubArray(List<int> collection, int lowerIndex, int hightIndex)
     {
         if(hightIndex == lowerIndex)
@@ -162,6 +171,11 @@ public class Serching
         }
 
         return(maxLeft, maxRight, leftSum + rightSumm);
-
     }
+#endregion
+}
+
+public class AnoutherAlghorithms
+{
+    
 }
