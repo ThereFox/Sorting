@@ -26,6 +26,10 @@ var res = serchingCollection.FindMaximumSubArray(collectionForSort, 0, collectio
 Console.WriteLine($"{res.Item1} {res.Item2} {res.Item3}");
 */
 
+var res = sortingCollection.HeapSort(collectionForSort.ToArray());
+
+Console.WriteLine(res);
+
 public class Sorting
 {
     #region InsertionSort
@@ -104,6 +108,79 @@ public class Sorting
         }
     }
     #endregion
+
+    #region heapSort
+
+    public int[] HeapSort(int[] arrayForSort)
+    {
+        var heap = BuildMaxHeap(arrayForSort);
+        for (int i = heap.Length - 1 ; i >= 1; i--)
+        {
+            var current = heap[i];
+            heap[i] = heap[0];
+            heap[0] = current;
+
+            heap.Count -= 1;
+
+            MaxHeapify(heap, 0);
+
+        }
+        return heap.data;
+    }
+
+    private Heap BuildMaxHeap(int[] array)
+    {
+        var heap = new Heap(array);
+        heap.Count = heap.Length;
+        for (int i = heap.Length - 1; i >= 0; i--)
+        {
+            MaxHeapify(heap, i);
+        }
+        return heap;
+    }
+
+    private void MaxHeapify(Heap heap, int i)
+    {
+        var largestElementIndex = 0;
+
+        var leftElementIndex = GetLeftSubElementIndex(i);
+        var rightElementIndex = GetRinghtSubElementIndex(i);
+
+        if (heap.Count > leftElementIndex && heap[leftElementIndex] > heap[i])
+        {
+            largestElementIndex = leftElementIndex;
+        }
+        else
+        {
+            largestElementIndex = i;
+        }
+
+        if (heap.Count > rightElementIndex && heap[rightElementIndex] > heap[largestElementIndex])
+        {
+            largestElementIndex = rightElementIndex;
+        }
+
+        if (largestElementIndex != i)
+        {
+            var current = heap[i];
+
+            heap[i] = heap[largestElementIndex];
+
+            heap[largestElementIndex] = current;
+
+            MaxHeapify(heap, largestElementIndex);
+        }
+
+    }
+    private int GetRinghtSubElementIndex(int i)
+    {
+        return 2 * i + 1;
+    }
+    private int GetLeftSubElementIndex(int i)
+    {
+        return 2 * i;
+    }
+    #endregion
 }
 
 
@@ -173,9 +250,38 @@ public class Serching
         return(maxLeft, maxRight, leftSum + rightSumm);
     }
 #endregion
+
+
+
 }
 
 public class AnoutherAlghorithms
 {
-    
+    public int[,] MultiplyMatrix(int[,] firstMatrix, int[,] secondMatrix)
+    {
+        return new int[1,1]; 
+    }
 }
+
+#region models
+    public class Heap
+    {
+        public int[] data;
+        public int Count;
+
+        public Heap(int[] ArrayForSort)
+        {
+            data = ArrayForSort;
+        }
+        public int Length { get
+            {
+                return data.Length;
+            }}
+
+        public int this[int index]
+        {
+            get { return data[index]; }
+            set { data[index] = value; }
+        }
+    }
+#endregion
