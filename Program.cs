@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 var sortingCollection = new Sorting();
 var serchingCollection = new Serching();
@@ -26,9 +27,15 @@ var res = serchingCollection.FindMaximumSubArray(collectionForSort, 0, collectio
 Console.WriteLine($"{res.Item1} {res.Item2} {res.Item3}");
 */
 
-var res = sortingCollection.HeapSort(collectionForSort.ToArray());
+//var res = sortingCollection.HeapSort(collectionForSort.ToArray());
 
-Console.WriteLine(res);
+//Console.WriteLine(res);
+
+var arrayCollection = collectionForSort.ToArray();
+
+sortingCollection.QuickSort(arrayCollection, 0, arrayCollection.Length - 1);
+
+Console.WriteLine(arrayCollection);
 
 public class Sorting
 {
@@ -113,7 +120,7 @@ public class Sorting
 
     public int[] HeapSort(int[] arrayForSort)
     {
-        var heap = BuildMaxHeap(arrayForSort);
+        var heap = BuildMaxHeap(arrayForSort);// создание не убывающей пирамиды
         for (int i = heap.Length - 1 ; i >= 1; i--)
         {
             var current = heap[i];
@@ -181,6 +188,53 @@ public class Sorting
         return 2 * i;
     }
     #endregion
+
+    #region quickSort
+
+    public void QuickSort(int[] collection, int statrIndex, int EndIndex)
+    {
+        if (EndIndex < statrIndex)
+        {
+            return;
+        }
+
+        var middleIndex = partition(collection, statrIndex, EndIndex);
+        
+        QuickSort(collection, statrIndex, middleIndex - 1);
+        QuickSort(collection, middleIndex + 1, EndIndex);
+    }
+
+    private int partition(int[] collection, int statrIndex, int EndIndex)
+    {
+
+
+        var elementForEqualing = collection[EndIndex];
+        var indexOfLastChangedElement = statrIndex - 1; // индекс поседнег изменённого элемента
+
+        for (int i = statrIndex; i <  EndIndex - 1; i++)
+        {
+            if (collection[i] <= elementForEqualing)
+            {
+                indexOfLastChangedElement++;
+                switchCollectionElements(collection, indexOfLastChangedElement, i);
+            }
+        }
+        
+        switchCollectionElements(collection, indexOfLastChangedElement + 1, EndIndex);
+        
+        return indexOfLastChangedElement + 1;
+    }
+
+    #endregion
+
+    private void switchCollectionElements(int[] collection, int firstIndex, int secondIndex)
+    {
+        var timebleVariable1 = collection[firstIndex];
+
+        collection[firstIndex] = collection[secondIndex];
+        collection[secondIndex] = timebleVariable1;
+    }
+
 }
 
 
