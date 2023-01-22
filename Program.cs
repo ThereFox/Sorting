@@ -5,11 +5,15 @@ var sortingCollection = new Sorting();
 var serchingCollection = new Serching();
 var anoutherAlghorithms = new AnoutherAlghorithms();
 
+//var collectionForSort = new List<int>()
+//{
+//    3, -5, -2, 5, -1, 4, -1, 9, 4, -2
+//};
+
 var collectionForSort = new List<int>()
 {
-    3, -5, -2, 5, -1, 4, -1, 9, 4, -2
+    3,5,2,5,1,4,1,3,9,4,2
 };
-
 
 
 /*
@@ -33,7 +37,8 @@ Console.WriteLine($"{res.Item1} {res.Item2} {res.Item3}");
 
 var arrayCollection = collectionForSort.ToArray();
 
-sortingCollection.QuickSort(arrayCollection, 0, arrayCollection.Length - 1);
+
+
 
 Console.WriteLine(arrayCollection);
 
@@ -193,7 +198,7 @@ public class Sorting
 
     public void QuickSort(int[] collection, int statrIndex, int EndIndex)
     {
-        if (EndIndex < statrIndex)
+        if (EndIndex <= statrIndex)
         {
             return;
         }
@@ -206,12 +211,11 @@ public class Sorting
 
     private int partition(int[] collection, int statrIndex, int EndIndex)
     {
-
-
         var elementForEqualing = collection[EndIndex];
-        var indexOfLastChangedElement = statrIndex - 1; // индекс поседнег изменённого элемента
 
-        for (int i = statrIndex; i <  EndIndex - 1; i++)
+        var indexOfLastChangedElement = statrIndex - 1; // индекс последнего изменённого элемента
+
+        for (int i = statrIndex; i <=  EndIndex - 1; i++)
         {
             if (collection[i] <= elementForEqualing)
             {
@@ -224,6 +228,57 @@ public class Sorting
         
         return indexOfLastChangedElement + 1;
     }
+
+    #endregion
+
+    #region CountingSort
+
+    public int[] CountingSort(int[] inneringData, int maxSortedValue)
+    {
+        var outputeData = new int[inneringData.Length];
+
+        var timebleArray = new int[maxSortedValue];
+
+        for (int i = 0; i < maxSortedValue; i++)
+        {
+            timebleArray[i] = 0; // инициалиализация значений
+        }
+
+        for (int i = 0; i < inneringData.Length; i++)
+        {
+            timebleArray[inneringData[i]] ++;
+        }
+        
+        for (int i = 1; i < maxSortedValue; i++)
+        {
+            timebleArray[i] = timebleArray[i] + timebleArray[i - 1];
+        }
+        
+        for (int i = inneringData.Length - 1; i >= 0; i--)
+        {
+            outputeData[timebleArray[inneringData[i]] - 1] = inneringData[i];
+            timebleArray[inneringData[i]]--;
+        }
+        return outputeData;
+    }
+
+    #endregion
+
+    #region BucketSort
+
+    public void BucketSort(float[] collection)
+    {
+        var countOfElement = collection.Length;
+
+        var timebleCollection = new List<float>(countOfElement);
+
+        for (int i = 1; i < countOfElement; i++)
+        {
+            timebleCollection.Add()
+        }
+
+    }
+
 
     #endregion
 
