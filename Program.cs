@@ -264,6 +264,14 @@ public class Sorting
 
     #endregion
 
+    #region regexSort
+
+    public void regexSort()
+    {
+    }
+
+    #endregion
+
     #region BucketSort
 
     public void BucketSort(float[] collection)
